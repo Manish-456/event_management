@@ -26,7 +26,7 @@ export async function updateUser(clerkId: string, user: UpdateUserParams){
     try {
         await connectToDatabase();
 
-        const updatedUser = await User.findByIdAndUpdate(clerkId, user, { new: true });
+        const updatedUser = await User.findOneAndUpdate({clerkId}, user, { new: true });
 
         if(!updatedUser) handleError("Failed to update user");
 
