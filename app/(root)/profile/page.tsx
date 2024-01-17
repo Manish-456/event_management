@@ -3,6 +3,8 @@ import { Collection } from "@/components/shared/collection";
 import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs";
 import { getEventByUser } from "@/lib/actions/event.actions";
+import { getOrdersByUser } from "@/lib/actions/order.actions";
+import { IOrder } from "@/lib/database/models/order.model";
 
 export default async function ProfilePage() {
   const { sessionClaims } = auth();
@@ -11,7 +13,14 @@ export default async function ProfilePage() {
   const organizedEvents = await getEventByUser({ 
     userId, 
     page : 1
-})
+});
+
+ const orders = await getOrdersByUser({
+  userId,
+  page: 1
+ });
+
+ const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
 
   return (
     <>
@@ -27,7 +36,7 @@ export default async function ProfilePage() {
 
       <section className="wrapper my-8">
         <Collection
-          data={[]}
+          data={orderedEvents}
           emptyTitle="No event tickets purchased yet"
           emptyStateSubtext="No worries - plenty of exciting events to explore!"
           collectionType="My_Tickets"
