@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { CheckoutOrderParams, CreateOrderParams } from "@/types";
 import { handleError } from "../utils";
 import Order from "@/lib/database/models/order.model";
+import { connectToDatabase } from "../database";
 
 export async function checkoutOrder(order : CheckoutOrderParams){
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -44,6 +45,7 @@ export async function checkoutOrder(order : CheckoutOrderParams){
 
 export async function createOrder(order: CreateOrderParams){
     try {
+      await connectToDatabase();
         const newOrder = await Order.create({
             ...order,
             event: order.eventId,
