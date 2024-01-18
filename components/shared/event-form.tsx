@@ -59,7 +59,6 @@ export function EventForm({ userId, type, event, eventId }: EventFormProps) {
   });
 
   async function onSubmit(values: TEventSchema) {
-    const eventData = values;
 
     let uploadedImageUrl = values.imageUrl;
 
@@ -128,6 +127,7 @@ export function EventForm({ userId, type, event, eventId }: EventFormProps) {
                     {...field}
                     className="input-field"
                     placeholder="Event title"
+
                   />
                 </FormControl>
                 <FormMessage />
