@@ -113,7 +113,8 @@ export const getAllEvents = async(
         
         const events = await populateEvent(eventsQuery);
 
-        const eventsCount = await Event.countDocuments(eventsQuery);
+        const eventsCount = await Event.countDocuments(conditions);
+
 
         return {
             data: JSON.parse(JSON.stringify(events)),
@@ -176,7 +177,6 @@ export async function getEventByUser({
 }: GetEventsByUserParams){
     try {
         await connectToDatabase();
-
         const condition = { organizer: userId};
         const skipAmount = (Number(page) - 1) * limit;
 
@@ -185,8 +185,11 @@ export async function getEventByUser({
         }).skip(skipAmount)
         .limit(limit);
 
+
        const events = await populateEvent(eventsQuery);
+       
        const eventsCount = await Event.countDocuments(condition);
+
 
        return {
         data: JSON.parse(JSON.stringify(events)),
